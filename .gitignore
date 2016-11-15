@@ -1,1 +1,4 @@
 .idea/
+
+music/*
+!music/readme.MD

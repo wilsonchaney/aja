@@ -1,0 +1,1 @@
+This directory will store any MIDI files used as training data.
