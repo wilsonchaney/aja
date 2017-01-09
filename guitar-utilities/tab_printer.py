@@ -1,14 +1,14 @@
+from guitar import Fingering
+
 from collections import namedtuple
 import logging
-
-Fingering = namedtuple("Fingering", "string fret")
 
 # Logger used for outputting tabs - avoids ugliness/interleaved lines when using print
 log = logging.getLogger("Tab")
 
 def print_melody_tab(melody, durations=None, fname=None):
     """
-    Prints a guitar tab, either to stdout or a file. It only works with single note melodies for now.
+    Prints a guitar tab, either to stdout or a file.
 
     Args:
         melody: list of Fingering structs.
@@ -32,14 +32,20 @@ def print_melody_tab(melody, durations=None, fname=None):
     # 2 characters per note, and 2 characters of spacing (unless durations is defined)
     for i in range(n):
         f = melody[i]
+        if type(f) is Fingering:
+            f = [f]
         for j in range(6):
-            if f.string == j:
-                # Write the fret number
-                if f.fret >= 10:
-                    lines[j] += str(f.fret)
-                else:
-                    lines[j] += str(f.fret) + "-"
-            else:
+            is_note_played = False
+            for note in f:
+                if note.string == j:
+                    # Write the fret number
+                    is_note_played = True
+                    if note.fret >= 10:
+                        lines[j] += str(note.fret)
+                    else:
+                        lines[j] += str(note.fret) + "-"
+                    break
+            if not is_note_played:
                 lines[j] += "--"
         # Add spacing
         if durations:
